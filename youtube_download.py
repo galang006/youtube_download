@@ -11,7 +11,13 @@ def download_youtube_video(url, output_path, format='best'):
         'format': f'{format}',
         'merge_output_format': 'mp4',
         'outtmpl': f'{output_path}/%(title)s.%(ext)s',
+        'cookiefile': "cookies.txt",
         'quiet': True,   
+        'writesubtitles': True,
+        #'writeautomaticsub': True,  
+        'subtitleslangs': ['id', 'en'],
+        'subtitlesformat': 'srt',
+         
     }
    
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -23,7 +29,12 @@ def download_youtube_video(url, output_path, format='best'):
 
 
 def list_formats(url):
-    with yt_dlp.YoutubeDL({'quiet': True,}) as ydl:
+    ydl_opts = {
+        'cookiefile': "cookies.txt",
+        'quiet': True,   
+    }
+
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=False)
         title = info.get("title", "Unknown Title")
         os.system("cls")
