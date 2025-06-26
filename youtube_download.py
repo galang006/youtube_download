@@ -11,7 +11,7 @@ def download_youtube_video(url, output_path, format='best'):
         'format': f'{format}',
         'merge_output_format': 'mp4',
         'outtmpl': f'{output_path}/%(title)s.%(ext)s',
-        'cookiefile': "cookies.txt",
+        #'cookiefile': "cookies.txt",
         'quiet': True,   
         'writesubtitles': True,
         #'writeautomaticsub': True,  
@@ -30,7 +30,7 @@ def download_youtube_video(url, output_path, format='best'):
 
 def list_formats(url):
     ydl_opts = {
-        'cookiefile': "cookies.txt",
+        #'cookiefile': "cookies.txt",
         'quiet': True,   
     }
 
