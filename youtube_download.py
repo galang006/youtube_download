@@ -1,7 +1,8 @@
 import yt_dlp
 from tabulate import tabulate
 import os
-def download_youtube_video(url, output_path="./downloads", format='best'):
+
+def download_youtube_video(url, output_path, format='best'):
     ydl_opts = {
         #'format': 'best[ext=mp4]',  # Download best mp4 format
         #'format': 'best[height=1080]',  # Download best mp4 format
@@ -109,6 +110,8 @@ def download_playlist(playlist_url, output_path="./downloads"):
             print(f"Error occurred: {e}")
 
 if __name__ == "__main__":
+    otput_path = "./downloads"
+    os.makedirs(otput_path, exist_ok=True)
     os.system("cls")
     video_url = input("Enter YouTube video URL: ")
     
@@ -116,4 +119,4 @@ if __name__ == "__main__":
     format = input("Enter the format you want to download (e.g., best, bestvideo[ext=mp4]+bestaudio[ext=m4a], format id ,video format id + audio format id): ")
     if not format:
         format = 'best'
-    download_youtube_video(video_url, format=format)
+    download_youtube_video(video_url, otput_path, format=format)
