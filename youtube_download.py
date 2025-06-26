@@ -24,23 +24,57 @@ def list_formats(url):
     with yt_dlp.YoutubeDL() as ydl:
         info = ydl.extract_info(url, download=False)
         title = info.get("title", "Unknown Title")
+        os.system("cls")
         print(f"\n📺 Judul Video: {title}\n")
         print("📝 Daftar Format:")
         print("-" * 60)
-        table = []
+
+        headers = ["Format ID", "Ext", "Video Codec", "Audio Codec", "Height", "FPS", "File Size (MB)", "Bitrate (Mbps)" ,"Note"]
+        table_audio, table_video, table_all = [], [], []
+
         for f in info['formats']:
-            table.append([
+            vcodec = str(f.get('vcodec')).lower()
+            acodec = str(f.get('acodec')).lower()
+
+            # Skip jika tidak ada audio maupun video
+            if vcodec == 'none' and acodec == 'none':
+                continue
+            
+            size_bytes = f.get("filesize")                 # bisa None
+            size_mb    = "-" if size_bytes is None else f"{size_bytes/1_048_576:,.2f}"
+
+            br_kbps = f.get("tbr")
+            br_display = "-" if br_kbps is None else f"{br_kbps:.0f}" 
+
+            row = [
                 f.get('format_id'),
                 f.get('ext'),
-                f.get('vcodec', '-') if f.get('vcodec') != 'none' else '-',
-                f.get('acodec', '-') if f.get('acodec') != 'none' else '-',
+                '-' if vcodec == 'none' else f.get('vcodec'),
+                '-' if acodec == 'none' else f.get('acodec'),
                 f.get('height', '-'),
                 f.get('fps', '-'),
+                size_mb,
+                br_kbps,
                 f.get('format_note', '-'),
-            ])
+                
+            ]
 
-        headers = ["Format ID", "Ext", "Video Codec", "Audio Codec", "Height", "FPS", "Note"]
-        print(tabulate(table, headers=headers, tablefmt="grid"))
+            if vcodec == 'none':
+                table_audio.append(row)
+            elif acodec == 'none':
+                table_video.append(row)
+            else:
+                table_all.append(row)
+
+        if table_all:
+            print("\n📼 Video + Audio Formats:")
+            print(tabulate(table_all, headers=headers, tablefmt="grid"))
+        if table_video:
+            print("\n🎥 Video Only Formats:")
+            print(tabulate(table_video, headers=headers, tablefmt="grid"))
+        if table_audio:
+            print("\n🎵 Audio Only Formats:")
+            print(tabulate(table_audio, headers=headers, tablefmt="grid"))
 
 def download_audio_only(url, output_path="./downloads"):
     ydl_opts = {
