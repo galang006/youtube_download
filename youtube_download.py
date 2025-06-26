@@ -22,11 +22,7 @@ def download_youtube_video(url, output_path="./downloads", format='best'):
 
 
 def list_formats(url):
-    ydl_opts = {
-        'quiet': True,   
-    }
-
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+    with yt_dlp.YoutubeDL({'quiet': True,}) as ydl:
         info = ydl.extract_info(url, download=False)
         title = info.get("title", "Unknown Title")
         os.system("cls")
