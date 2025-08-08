@@ -42,18 +42,17 @@ def list_formats(url):
         print("📝 Daftar Format:")
         print("-" * 60)
 
-        headers = ["Format ID", "Ext", "Video Codec", "Audio Codec", "Height", "FPS", "File Size (MB)", "Bitrate (Mbps)" ,"Note"]
+        headers = ["Format ID", "Ext", "Video Codec", "Audio Codec", "Height", "FPS", "File Size (MB)", "Bitrate (Kbps)" ,"Note"]
         table_audio, table_video, table_all = [], [], []
 
         for f in info['formats']:
             vcodec = str(f.get('vcodec')).lower()
             acodec = str(f.get('acodec')).lower()
 
-            # Skip jika tidak ada audio maupun video
             if vcodec == 'none' and acodec == 'none':
                 continue
             
-            size_bytes = f.get("filesize")                 # bisa None
+            size_bytes = f.get("filesize")                 
             size_mb    = "-" if size_bytes is None else f"{size_bytes/1_048_576:,.2f}"
 
             br_kbps = f.get("tbr")
@@ -67,7 +66,7 @@ def list_formats(url):
                 f.get('height', '-'),
                 f.get('fps', '-'),
                 size_mb,
-                br_kbps,
+                br_display,
                 f.get('format_note', '-'),
                 
             ]
