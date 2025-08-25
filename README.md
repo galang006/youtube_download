@@ -46,7 +46,7 @@ A command-line tool for downloading YouTube videos and playlists using `yt-dlp` 
 
 The project consists of a single Python file:
 
-- **`youtube_download.py`:** This file contains all the code for downloading YouTube videos and playlists.  The main functions are:
+- **`main.py`:** This file contains all the code for downloading YouTube videos and playlists.  The main functions are:
     - `download_youtube_video(url, output_path, format)`: Downloads a single YouTube video.
     - `list_formats(url)`: Lists available formats for a given YouTube URL.
     - `download_playlist(playlist_url, output_path)`: Downloads a YouTube playlist.
