@@ -32,9 +32,9 @@ A command-line tool for downloading YouTube videos and playlists using `yt-dlp` 
 
 ## Usage
 
-1. **Run the script:** Execute the `youtube_download.py` script from your terminal:
+1. **Run the script:** Execute the `main.py` script from your terminal:
    ```bash
-   python youtube_download.py
+   python main.py
    ```
 2. **Enter the YouTube URL:** The script will prompt you to enter the URL of the YouTube video you want to download.
 3. **View Available Formats:** The script will then display a table listing all available formats. Carefully examine the table to choose a suitable format.    
@@ -46,7 +46,7 @@ A command-line tool for downloading YouTube videos and playlists using `yt-dlp` 
 
 The project consists of a single Python file:
 
-- **`youtube_download.py`:** This file contains all the code for downloading YouTube videos and playlists.  The main functions are:
+- **`main.py`:** This file contains all the code for downloading YouTube videos and playlists.  The main functions are:
     - `download_youtube_video(url, output_path, format)`: Downloads a single YouTube video.
     - `list_formats(url)`: Lists available formats for a given YouTube URL.
     - `download_playlist(playlist_url, output_path)`: Downloads a YouTube playlist.
