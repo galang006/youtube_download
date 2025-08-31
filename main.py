@@ -27,6 +27,18 @@ def download_youtube_video(url, output_path, format='best'):
         except Exception as e:
             print(f"Error occurred: {e}")
 
+def clarify_size(fmt):
+    vcodec = (fmt.get("vcodec") or "").lower()
+    acodec = (fmt.get("acodec") or "").lower()
+    if vcodec == "none":
+        return "audio_only"
+    if acodec == "none":
+        return "video_only"
+    return "audio_video"
+
+def size_mb(fmt):
+    size = fmt.get("filesize") or fmt.get("filesize_approx")
+    return None if size is None else round(size / 1_048_576, 2)
 
 def list_formats(url):
     ydl_opts = {
@@ -52,8 +64,9 @@ def list_formats(url):
             if vcodec == 'none' and acodec == 'none':
                 continue
             
-            size_bytes = f.get("filesize")                 
-            size_mb    = "-" if size_bytes is None else f"{size_bytes/1_048_576:,.2f}"
+            # size_mb = size_mb(f)
+            # size_bytes = f.get("filesize")                 
+            # size_mb    = "-" if size_bytes is None else f"{size_bytes/1_048_576:,.2f}"
 
             br_kbps = f.get("tbr")
             br_display = "-" if br_kbps is None else f"{br_kbps:.0f}" 
@@ -65,8 +78,8 @@ def list_formats(url):
                 '-' if acodec == 'none' else f.get('acodec'),
                 f.get('height', '-'),
                 f.get('fps', '-'),
-                size_mb,
-                br_display,
+                size_mb(fmt=f),
+                f.get("tbr"),
                 f.get('format_note', '-'),
                 
             ]
@@ -106,18 +119,18 @@ def list_formats(url):
 #         except Exception as e:
 #             print(f"Error occurred: {e}")
 
-def download_playlist(playlist_url, output_path="./downloads"):
-    ydl_opts = {
-        'format': 'best[ext=mp4]',
-        'outtmpl': f'{output_path}/%(playlist_index)s - %(title)s.%(ext)s',
-    }
+# def download_playlist(playlist_url, output_path="./downloads"):
+#     ydl_opts = {
+#         'format': 'best[ext=mp4]',
+#         'outtmpl': f'{output_path}/%(playlist_index)s - %(title)s.%(ext)s',
+#     }
     
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        try:
-            ydl.download([playlist_url])
-            print("Playlist download completed successfully!")
-        except Exception as e:
-            print(f"Error occurred: {e}")
+#     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+#         try:
+#             ydl.download([playlist_url])
+#             print("Playlist download completed successfully!")
+#         except Exception as e:
+#             print(f"Error occurred: {e}")
 
 if __name__ == "__main__":
     otput_path = "./downloads"
