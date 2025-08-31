@@ -1,3 +1,5 @@
 downloads
 cookies.txt
 dist
+.env
+__pycache__
