@@ -2,8 +2,10 @@ import os
 from flask import Flask, request, jsonify, send_from_directory, abort
 from datetime import datetime
 from yt_dlp import YoutubeDL
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app) 
 
 DOWNLOAD_DIR = "./downloads"
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
