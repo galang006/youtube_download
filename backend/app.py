@@ -12,6 +12,11 @@ CORS(app, origins=[FRONTEND_URL])
 DOWNLOAD_DIR = "./downloads"
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
+cookies_content = os.getenv("YTDLP_COOKIES")
+if cookies_content:
+    with open("cookies.txt", "w") as f:
+        f.write(cookies_content)
+
 def classify_format(fmt):
     vcodec = (fmt.get("vcodec") or "").lower()
     acodec = (fmt.get("acodec") or "").lower()
@@ -35,7 +40,10 @@ def list_formats():
     if not url:
         return jsonify(error="Missing 'url' query parameter"), 400
 
-    opts = {"quiet": True}
+    opts = {
+        "quiet": True,
+        'cookiefile': "cookies.txt",
+    }
     with YoutubeDL(opts) as ydl:
         info = ydl.extract_info(url, download=False)
 
@@ -87,6 +95,7 @@ def download_video():
         "outtmpl": outtmpl,
         "quiet": True,
         "progress_hooks": [hook],
+        'cookiefile': "cookies.txt",
         "cache_dir": "/app/downloads/.yt-dlp-cache", 
     }
     if with_subs:
