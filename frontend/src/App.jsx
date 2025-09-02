@@ -15,7 +15,7 @@ function App() {
     setLoadingFormats(true);
     setFormats(null);
     try {
-      const res = await fetch(`https://youtube-download-backend-ejri.onrender.com/formats?url=${encodeURIComponent(url)}`);
+      const res = await fetch(`https://youtube-download-backend-3llm.onrender.com/formats?url=${encodeURIComponent(url)}`);
       const data = await res.json();
       setFormats(data);
     } catch (err) {
@@ -45,7 +45,7 @@ function App() {
 
     setLoadingDownload(true);
     try {
-      const res = await fetch("https://youtube-download-backend-ejri.onrender.com/download", {
+      const res = await fetch("https://youtube-download-backend-3llm.onrender.com/download", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url, format }), // <-- send combined string here
@@ -194,7 +194,7 @@ function App() {
             {downloadFiles.map((file) => (
               <li key={file}>
                 <a
-                  href={`https://youtube-download-backend-ejri.onrender.com/file/${encodeURIComponent(file)}`}
+                  href={`https://youtube-download-backend-3llm.onrender.com/file/${encodeURIComponent(file)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 underline"
