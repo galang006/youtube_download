@@ -3,9 +3,11 @@ from flask import Flask, request, jsonify, send_from_directory, abort
 from datetime import datetime
 from yt_dlp import YoutubeDL
 from flask_cors import CORS
+import os
 
 app = Flask(__name__)
-CORS(app) 
+FRONTEND_URL = os.environ.get("FRONTEND_URL", "*")  # fallback to allow all
+CORS(app, origins=[FRONTEND_URL])
 
 DOWNLOAD_DIR = "./downloads"
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
@@ -66,7 +68,7 @@ def download_video():
     data = request.get_json(silent=True) or {}
     url = data.get("url")
     fmt = data.get("format", "best")  # e.g., "best", "bestvideo+bestaudio", or a format_id
-    with_subs = bool(data.get("subtitles", True))  # keep default similar to your script
+    with_subs = bool(data.get("subtitles", True))  
 
     if not url:
         return jsonify(error="Missing 'url' in JSON body"), 400
@@ -104,8 +106,8 @@ def download_video():
 
     return jsonify(
         message="Download completed",
-        files=saved_files,  # list of saved filenames
-        download_base="/file",  # you can GET /file/<filename> to fetch
+        files=saved_files,  
+        download_base="/file", 
     )
 
 @app.get("/file/<path:filename>")
@@ -121,5 +123,5 @@ def get_file(filename):
         abort(500, description=str(e))
 
 if __name__ == "__main__":
-    # Run the Flask dev server (Docker will map the port)
-    app.run(host="0.0.0.0", port=8000, debug=False)
+    port = int(os.environ.get("PORT", 8000))  
+    app.run(host="0.0.0.0", port=port)
