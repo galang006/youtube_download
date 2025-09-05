@@ -131,16 +131,6 @@ def get_file(filename):
     except Exception as e:
         abort(500, description=str(e))
 
-@app.get("/files")
-def list_files():
-    try:
-        files = os.listdir(DOWNLOAD_DIR)
-        # optional: filter only video/audio files
-        files = [f for f in files if f.endswith((".mp4", ".webm", ".mkv", ".mp3"))]
-        return jsonify(files=files)
-    except Exception as e:
-        return jsonify(error=str(e)), 500
-
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))  
     app.run(host="0.0.0.0", port=port)

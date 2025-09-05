@@ -214,26 +214,6 @@ function App() {
           </button>
         </div>
       )}
-
-      {downloadFiles.length > 0 && (
-        <div className="mt-6">
-          <h3 className="font-semibold mb-2">Downloaded Files:</h3>
-          <ul className="list-disc pl-5">
-            {downloadFiles.map((file) => (
-              <li key={file}>
-                <a
-                  href={`https://youtube-download-backend-3llm.onrender.com/file/${encodeURIComponent(file)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 underline"
-                >
-                  {file}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
     </div>
   );
 }
