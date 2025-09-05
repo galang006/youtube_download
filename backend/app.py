@@ -6,8 +6,8 @@ from flask_cors import CORS
 import os
 
 app = Flask(__name__)
-FRONTEND_URL = os.environ.get("FRONTEND_URL", "*")  # fallback to allow all
-CORS(app, origins=[FRONTEND_URL])
+FRONTEND_URL = os.getenv("FRONTEND_URL")  # fallback to allow all
+CORS(app, origins=[FRONTEND_URL, "https://youtube-download-9qlxn0q56.vercel.app", "youtube-download-galang-satriamahesa-putra-dewas-projects.vercel.app"])
 
 DOWNLOAD_DIR = "./downloads"
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
@@ -130,6 +130,16 @@ def get_file(filename):
         return response
     except Exception as e:
         abort(500, description=str(e))
+
+@app.get("/files")
+def list_files():
+    try:
+        files = os.listdir(DOWNLOAD_DIR)
+        # optional: filter only video/audio files
+        files = [f for f in files if f.endswith((".mp4", ".webm", ".mkv", ".mp3"))]
+        return jsonify(files=files)
+    except Exception as e:
+        return jsonify(error=str(e)), 500
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))  
