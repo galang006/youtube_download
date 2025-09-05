@@ -52,6 +52,34 @@ function App() {
       });
       const data = await res.json();
       setDownloadFiles(data.files || []);
+
+      let urlPath;
+      let downloadFileName;
+
+      if (selectedVideoAudio) {
+        // Case 1: Combined video+audio format (muxed from backend)
+        const file = data.files[0]; // backend gives you the actual filename
+        downloadFileName = file;
+        urlPath = `/file/${encodeURIComponent(file)}`;
+      } else if (selectedVideo && selectedAudio) {
+        // Case 2: Separate video + audio → force <title>.mp4
+        downloadFileName = `${formats.title}.mp4`;
+        urlPath = `/file/${encodeURIComponent(downloadFileName)}`;
+      } else if (selectedVideo || selectedAudio) {
+        // Case 3: Only video OR only audio → take the single file from backend
+        const file = data.files[0];
+        downloadFileName = file;
+        urlPath = `/file/${encodeURIComponent(file)}`;
+      }
+
+      // Auto trigger download
+      const a = document.createElement("a");
+      a.href = `https://youtube-download-backend-3llm.onrender.com${urlPath}`;
+      a.download = downloadFileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      
     } catch (err) {
       alert("Download failed");
     } finally {
