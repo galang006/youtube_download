@@ -9,13 +9,14 @@ function App() {
   const [downloadFiles, setDownloadFiles] = useState([]);
   const [loadingFormats, setLoadingFormats] = useState(false);
   const [loadingDownload, setLoadingDownload] = useState(false);
+  const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
   const fetchFormats = async () => {
     if (!url) return;
     setLoadingFormats(true);
     setFormats(null);
     try {
-      const res = await fetch(`https://youtube-download-backend-3llm.onrender.com/formats?url=${encodeURIComponent(url)}`);
+      const res = await fetch(`${API_BASE}/formats?url=${encodeURIComponent(url)}`);
       const data = await res.json();
       setFormats(data);
     } catch (err) {
@@ -45,7 +46,7 @@ function App() {
 
     setLoadingDownload(true);
     try {
-      const res = await fetch("https://youtube-download-backend-3llm.onrender.com/download", {
+      const res = await fetch("${API_BASE}/download", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url, format }), // <-- send combined string here
@@ -74,7 +75,7 @@ function App() {
 
       // Auto trigger download
       const a = document.createElement("a");
-      a.href = `https://youtube-download-backend-3llm.onrender.com${urlPath}`;
+      a.href = `${API_BASE}${urlPath}`;
       a.download = downloadFileName;
       document.body.appendChild(a);
       a.click();
