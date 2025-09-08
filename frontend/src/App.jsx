@@ -13,6 +13,12 @@ function App() {
 
   const fetchFormats = async () => {
     if (!url) return;
+    setFormats(null);
+    setSelectedAudio("");
+    setSelectedVideo("");
+    setSelectedVideoAudio("");
+    setDownloadFiles([]);
+  
     setLoadingFormats(true);
     setFormats(null);
     try {
