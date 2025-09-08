@@ -46,7 +46,7 @@ function App() {
 
     setLoadingDownload(true);
     try {
-      const res = await fetch("${API_BASE}/download", {
+      const res = await fetch(`${API_BASE}/download`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url, format }), // <-- send combined string here
